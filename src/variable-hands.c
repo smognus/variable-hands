@@ -111,7 +111,7 @@ static void hands_layer_update_proc (Layer* layer, GContext* ctx) {
   }
 
   // the number of pixels the hour hand will remain from the window edge
-  int hour_length_offset = 25;
+  int hour_length_offset = 35;
 
   if (((hour_angle >= 49 && hour_angle <= 139) ||
        (hour_angle >= 229 && hour_angle <= 311)) &&
