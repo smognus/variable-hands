@@ -2,6 +2,7 @@
 #include "pebble_app.h"
 #include "pebble_fonts.h"
 #include "util.h"
+#include "outlined_text.h"
 
 #define MY_UUID { 0x19, 0xA1, 0x31, 0x59, 0x2A, 0x49, 0x4E, 0xE6, 0x9F, 0x3D, 0xC3, 0xC3, 0xA5, 0x42, 0x06, 0x8F }
 PBL_APP_INFO(MY_UUID,
@@ -46,10 +47,9 @@ static void hands_layer_update_proc (Layer* layer, GContext* ctx) {
   GPath minute_hand_path;
   GPath hour_hand_path;
   PblTm time;
-  /* char length_text[] = "     "; */
-  /* char seconds_text[] = "  "; */
-  /* char second_angle_text[] = "   "; */
   char day_text[] = "  ";
+  char month_text[] = "   ";
+  char month_format[] = "%b";
   int32_t second_angle;
   int32_t minute_angle;
   int32_t hour_angle;
@@ -128,15 +128,6 @@ static void hands_layer_update_proc (Layer* layer, GContext* ctx) {
     hour_hand_path_points.points[5].y = (hour_length > 0) ? -(hour_length-(hour_length_offset + 5)) : hour_length+(hour_length_offset + 5);
   }
 
-  /* strcpy(day_text, itoa(time.tm_mday)); */
-  /* graphics_text_draw(ctx, */
-  /* 		     day_text, */
-  /* 		     fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD), */
-  /* 		     GRect(0,90,144,168), */
-  /* 		     GTextOverflowModeWordWrap, */
-  /* 		     GTextAlignmentCenter, */
-  /* 		     NULL); */
-
   gpath_init(&minute_hand_path, &minute_hand_path_points);
   gpath_move_to(&minute_hand_path, center);
   gpath_rotate_to(&minute_hand_path, TRIG_MAX_ANGLE / 360 * minute_angle);
@@ -161,34 +152,20 @@ static void hands_layer_update_proc (Layer* layer, GContext* ctx) {
   gpath_draw_filled(ctx, &second_hand_path);
   gpath_draw_outline(ctx, &second_hand_path);
 
-  graphics_context_set_text_color(ctx, GColorWhite);
+  graphics_context_set_fill_color(ctx, GColorBlack);
+  graphics_context_set_stroke_color(ctx, GColorWhite);
+  graphics_fill_circle(ctx, center, 13);
+  graphics_draw_circle(ctx, center, 13);
 
-  /* strcpy(second_angle_text, itoa(cos_lookup(trig_second_angle - trig_ninety))); */
-  /* graphics_text_draw(ctx, */
-  /* 		     second_angle_text, */
-  /* 		     fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD), */
-  /* 		     GRect(0,70,144,168), */
-  /* 		     GTextOverflowModeWordWrap, */
-  /* 		     GTextAlignmentCenter, */
-  /* 		     NULL); */
-
-  /* strcpy(length_text, itoa((int)hour_length)); */
-  /* graphics_text_draw(ctx, */
-  /* 		     length_text, */
-  /* 		     fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD), */
-  /* 		     GRect(0,90,144,168), */
-  /* 		     GTextOverflowModeWordWrap, */
-  /* 		     GTextAlignmentCenter, */
-  /* 		     NULL); */
-
-  /* strcpy(seconds_text, itoa(time.tm_hour)); */
-  /* graphics_text_draw(ctx, */
-  /* 		     seconds_text, */
-  /* 		     fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD), */
-  /* 		     GRect(0,110,144,168), */
-  /* 		     GTextOverflowModeWordWrap, */
-  /* 		     GTextAlignmentCenter, */
-  /* 		     NULL); */
+  strcpy(day_text, itoa(time.tm_mday));
+  draw_outlined_text(ctx,
+  		     day_text,
+		     fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD),
+  		     GRect(0,67,144,168-80),
+  		     GTextOverflowModeWordWrap,
+  		     GTextAlignmentCenter,
+		     1,
+  		     true);
 }
 
 void handle_init(AppContextRef ctx) {
