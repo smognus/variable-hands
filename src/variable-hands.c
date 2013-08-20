@@ -152,20 +152,20 @@ static void hands_layer_update_proc (Layer* layer, GContext* ctx) {
   gpath_draw_filled(ctx, &second_hand_path);
   gpath_draw_outline(ctx, &second_hand_path);
 
-  /* graphics_context_set_fill_color(ctx, GColorWhite); */
-  /* graphics_context_set_stroke_color(ctx, GColorBlack); */
-  /* graphics_fill_circle(ctx, center, 7); */
-  /* //  graphics_draw_circle(ctx, center, 8); */
+  graphics_context_set_fill_color(ctx, GColorWhite);
+  graphics_context_set_stroke_color(ctx, GColorBlack);
+  graphics_fill_circle(ctx, center, 7);
+  //  graphics_draw_circle(ctx, center, 8);
 
-  /* strcpy(day_text, itoa(time.tm_mday)); */
-  /* draw_outlined_text(ctx, */
-  /* 		     day_text, */
-  /* 		     fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD), */
-  /* 		     GRect(0,75,144,168-80), */
-  /* 		     GTextOverflowModeWordWrap, */
-  /* 		     GTextAlignmentCenter, */
-  /* 		     1, */
-  /* 		     false); */
+  strcpy(day_text, itoa(time.tm_mday));
+  draw_outlined_text(ctx,
+  		     day_text,
+  		     fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD),
+  		     GRect(0,75,144,168-80),
+  		     GTextOverflowModeWordWrap,
+  		     GTextAlignmentCenter,
+  		     1,
+  		     false);
 }
 
 void handle_init(AppContextRef ctx) {
