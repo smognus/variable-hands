@@ -18,6 +18,11 @@ Layer clockface_layer;
 Layer hands_layer;
 BmpContainer clockface;
 
+GPathInfo date_diamond_points = {
+  .num_points = 4,
+  .points = (GPoint []) {{-8,8},{8,8},{8,-8},{-8,-8}}
+};
+
 GPathInfo hour_hand_path_points = {
   .num_points = 6,
   .points = (GPoint []) {{6,0},{0,8},{-6,0},{-4,-60},{0,-65},{4,-60}}
@@ -46,6 +51,7 @@ static void hands_layer_update_proc (Layer* layer, GContext* ctx) {
   GPath second_hand_path;
   GPath minute_hand_path;
   GPath hour_hand_path;
+  GPath date_diamond_path;
   PblTm time;
   char day_text[] = "  ";
   char month_text[] = "   ";
@@ -152,10 +158,17 @@ static void hands_layer_update_proc (Layer* layer, GContext* ctx) {
   gpath_draw_filled(ctx, &second_hand_path);
   gpath_draw_outline(ctx, &second_hand_path);
 
+  /* graphics_context_set_fill_color(ctx, GColorWhite); */
+  /* graphics_context_set_stroke_color(ctx, GColorBlack); */
+  /* graphics_fill_circle(ctx, center, 7); */
+
+  gpath_init(&date_diamond_path, &date_diamond_points);
+  gpath_move_to(&date_diamond_path, center);
+  gpath_rotate_to(&date_diamond_path, TRIG_MAX_ANGLE / 8); // 45 degrees
   graphics_context_set_fill_color(ctx, GColorWhite);
   graphics_context_set_stroke_color(ctx, GColorBlack);
-  graphics_fill_circle(ctx, center, 7);
-  //  graphics_draw_circle(ctx, center, 8);
+  gpath_draw_filled(ctx, &date_diamond_path);
+  gpath_draw_outline(ctx, &date_diamond_path);
 
   strcpy(day_text, itoa(time.tm_mday));
   draw_outlined_text(ctx,
